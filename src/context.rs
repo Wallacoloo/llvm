@@ -42,6 +42,13 @@ impl Context {
         }
     }
 
+    pub fn struct_type(&self, mut element_types: Vec<LLVMTypeRef>, is_packed: bool) -> LLVMTypeRef {
+        unsafe {
+            llvm::LLVMStructTypeInContext(self.ptr, element_types.as_mut_ptr(),
+                element_types.len() as u32, is_packed as i32)
+        }
+    }
+
     pub fn append_basic_block(&self, func: &mut Function, name: &str) -> LLVMBasicBlockRef {
         let c_name = CString::new(name).unwrap();
         unsafe {
