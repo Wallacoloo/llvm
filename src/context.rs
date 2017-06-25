@@ -49,6 +49,13 @@ impl Context {
         }
     }
 
+    pub fn named_struct_type(&self, name: &str) -> LLVMTypeRef {
+        let c_name = CString::new(name).unwrap();
+        unsafe {
+            llvm::LLVMStructCreateNamed(self.ptr, c_name.as_ptr())
+        }
+    }
+
     pub fn append_basic_block(&self, func: &mut Function, name: &str) -> LLVMBasicBlockRef {
         let c_name = CString::new(name).unwrap();
         unsafe {
