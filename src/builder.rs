@@ -233,6 +233,16 @@ impl Builder {
                                        indices.len() as u32, c_name.as_ptr())
         }
     }
+    pub fn build_switch(&self, value: LLVMValueRef, default: LLVMBasicBlockRef,
+                        cases: Vec<(LLVMValueRef, LLVMBasicBlockRef)>) -> LLVMValueRef {
+        unsafe {
+            let switch = llvm::LLVMBuildSwitch(self.ptr, value, default, cases.len() as u32);
+            for case in cases {
+                llvm::LLVMAddCase(switch, case.0, case.1);
+            }
+            switch
+        }
+    }
 }
 
 impl Drop for Builder {
